@@ -1,0 +1,98 @@
+/* ============================================================
+   userContent.css: «Night Navigator» для ВНУТРІШНІХ сторінок браузера.
+   ВАЖЛИВО: усе нижче всередині @-moz-document для конкретних адрес.
+   Не додавай правил ПОЗА цим блоком: сайти можуть побачити їх через
+   JavaScript, і це ознака для відстеження. Звичайні сайти не зачіпаються.
+   ============================================================ */
+@-moz-document url-prefix("about:newtab"), url-prefix("about:home"),
+               url-prefix("about:privatebrowsing"), url-prefix("about:preferences"),
+               url-prefix("about:addons"), url-prefix("about:config"),
+               url-prefix("about:support"), url-prefix("about:profiles") {
+
+  :root {
+    --nn-bg0: #0C111B;  --nn-bg1: #131A27;  --nn-bg2: #1B2536;
+    --nn-line: #2A364C; --nn-text: #D3DCE8; --nn-muted: #8494AB;
+    --nn-coral: #FF7A66; --nn-coral-d: #C9594A; --nn-teal: #2BA3B3;
+    --nn-raised: inset 1px 1px 0 rgba(170,195,235,.16), inset -1px -1px 0 rgba(0,0,0,.6), 0 0 0 1px #05080E;
+    --nn-sunken: inset 1px 1px 0 rgba(0,0,0,.6), inset -1px -1px 0 rgba(170,195,235,.16), 0 0 0 1px #05080E;
+    --nn-font: "Tahoma", "MS Sans Serif", "Segoe UI", system-ui, sans-serif;
+
+    /* змінні, якими користуються сторінки Firefox (тема в один захід) */
+    --newtab-background-color: var(--nn-bg0) !important;
+    --newtab-background-color-secondary: var(--nn-bg2) !important;
+    --newtab-text-primary-color: var(--nn-text) !important;
+    --newtab-text-secondary-color: var(--nn-muted) !important;
+    --newtab-border-color: var(--nn-line) !important;
+    --newtab-primary-action-background: var(--nn-coral-d) !important;
+    --in-content-page-background: var(--nn-bg0) !important;
+    --in-content-page-color: var(--nn-text) !important;
+    --in-content-text-color: var(--nn-text) !important;
+    --in-content-box-background: var(--nn-bg1) !important;
+    --in-content-border-color: var(--nn-line) !important;
+    --in-content-box-border-color: var(--nn-line) !important;
+    --in-content-accent-color: var(--nn-coral) !important;
+    --in-content-link-color: var(--nn-teal) !important;
+    --in-content-primary-button-background: var(--nn-coral-d) !important;
+    --in-content-primary-button-background-hover: var(--nn-coral) !important;
+    --in-content-primary-button-text-color: #fff !important;
+    font-family: var(--nn-font) !important;
+  }
+
+  ::selection { background: var(--nn-coral-d); color: #fff; }
+
+  /* Нова вкладка: фон, акула та декоративні кола/ромб зі зразка «sharks» */
+  body {
+    background-color: var(--nn-bg0) !important;
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><clipPath id='b'><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z'/></clipPath><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%232BA3B3'/><stop offset='1' stop-color='%2314606E'/></linearGradient></defs><g clip-path='url(%23b)'><rect width='400' height='200' fill='url(%23g)'/><circle cx='95' cy='100' r='62' fill='white' fill-opacity='.10'/><circle cx='175' cy='112' r='56' fill='white' fill-opacity='.08'/><circle cx='255' cy='96' r='52' fill='black' fill-opacity='.14'/><circle cx='330' cy='104' r='42' fill='white' fill-opacity='.10'/></g><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z' fill='none' stroke='%23FF7A66' stroke-width='2.5' stroke-opacity='.8'/><circle cx='60' cy='98' r='5.5' fill='%23FF7A66'/><path d='M118 88q8 12 0 26M130 86q8 13 0 28M142 86q8 13 0 28M22 114q28 12 58 4' fill='none' stroke='white' stroke-opacity='.55' stroke-width='3' stroke-linecap='round'/></svg>"),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 700' preserveAspectRatio='xMidYMid slice'><circle cx='260' cy='560' r='170' fill='%232BA3B3' fill-opacity='.10'/><circle cx='980' cy='140' r='120' fill='%23FF7A66' fill-opacity='.08'/><rect x='930' y='480' width='120' height='120' transform='rotate(45 990 540)' fill='none' stroke='%23FF7A66' stroke-opacity='.35' stroke-width='3'/><path d='M150 90a90 90 0 0 1 140 0' fill='none' stroke='%232BA3B3' stroke-opacity='.4' stroke-width='3'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: 50% 78%, 50% 50% !important;
+    background-size: min(520px, 62vw) auto, cover !important;
+  }
+
+  /* Рядок заголовка як у вікні Netscape */
+  body::before {
+    content: "LibreWolf - [Night Navigator 2.01]";
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    padding: 3px 10px;
+    font: bold 12px var(--nn-font);
+    color: #fff;
+    background: linear-gradient(90deg, #14606E, #0C111B);
+    box-shadow: 0 1px 0 var(--nn-coral-d);
+  }
+
+  /* Поле пошуку: втиснуте. Плитки найкращих сайтів: випуклі.
+     Якщо вигляд не змінився, у твоїй версії інші класи: напиши мені */
+  .search-handoff-button,
+  .search-wrapper .search-inner-wrapper {
+    border-radius: 0 !important;
+    background: var(--nn-bg0) !important;
+    box-shadow: var(--nn-sunken) !important;
+    border: none !important;
+  }
+  .top-site-outer .tile {
+    border-radius: 0 !important;
+    background: var(--nn-bg2) !important;
+    box-shadow: var(--nn-raised) !important;
+  }
+  .top-site-outer:hover .tile { box-shadow: var(--nn-raised), inset 0 0 0 1px var(--nn-coral) !important; }
+
+  /* Налаштування та інші внутрішні сторінки: плоскі скоси замість заокруглень */
+  button, input, select, textarea {
+    border-radius: 0 !important;
+  }
+  button:not(.primary) {
+    background: var(--nn-bg2) !important;
+    color: var(--nn-text) !important;
+    box-shadow: var(--nn-raised) !important;
+    border: none !important;
+  }
+  button:not(.primary):hover { box-shadow: var(--nn-raised), inset 0 0 0 1px var(--nn-coral) !important; }
+  input[type="text"], input[type="search"], input[type="number"], textarea {
+    background: var(--nn-bg0) !important;
+    color: var(--nn-text) !important;
+    box-shadow: var(--nn-sunken) !important;
+    border: none !important;
+  }
+}

@@ -1,0 +1,259 @@
+/* ============================================================
+   parts/wolf-ui.css: «Night Navigator» (ретро Netscape + акула)
+   Змінює ТІЛЬКИ інтерфейс браузера. Вкладок не торкається.
+   Рекомендована тема Firefox: Dark (about:addons → Теми),
+   бо іконки й тексти тут світлі.
+   ============================================================ */
+
+:root {
+  /* ---------- ПАЛІТРА (змінюй тут) ---------- */
+  --nn-bg0:     #0C111B;   /* найглибший: поле адреси, фон сторінок */
+  --nn-bg1:     #131A27;   /* панелі */
+  --nn-bg2:     #1B2536;   /* «випуклі» кнопки */
+  --nn-line:    #2A364C;   /* лінії */
+  --nn-text:    #D3DCE8;   /* м'який світлий текст (не білий) */
+  --nn-muted:   #8494AB;   /* приглушений текст */
+  --nn-coral:   #FF7A66;   /* відблиски коралового */
+  --nn-coral-d: #C9594A;   /* темніший корал */
+  --nn-teal:    #2BA3B3;   /* колір акули */
+  --nn-teal-d:  #14606E;
+
+  /* ---------- СКОСИ як у Netscape ---------- */
+  --nn-hi: rgba(170, 195, 235, 0.16);   /* світла грань */
+  --nn-lo: rgba(0, 0, 0, 0.60);         /* темна грань */
+  --nn-raised: inset 1px 1px 0 var(--nn-hi), inset -1px -1px 0 var(--nn-lo), 0 0 0 1px #05080E;
+  --nn-sunken: inset 1px 1px 0 var(--nn-lo), inset -1px -1px 0 var(--nn-hi), 0 0 0 1px #05080E;
+  --nn-font: "Tahoma", "MS Sans Serif", "Segoe UI", system-ui, sans-serif;
+
+  /* ---------- АКУЛА (вбудована картинка, нічого не вантажить із мережі).
+     Кольори вшиті в SVG: щоб змінити, заміни %232BA3B3 (бірюзовий)
+     та %23FF7A66 (корал) ---------- */
+  --nn-shark-logo: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><clipPath id='b'><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z'/></clipPath><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%232BA3B3'/><stop offset='1' stop-color='%2314606E'/></linearGradient></defs><g clip-path='url(%23b)'><rect width='400' height='200' fill='url(%23g)'/><circle cx='95' cy='100' r='62' fill='white' fill-opacity='.10'/><circle cx='175' cy='112' r='56' fill='white' fill-opacity='.08'/><circle cx='255' cy='96' r='52' fill='black' fill-opacity='.14'/><circle cx='330' cy='104' r='42' fill='white' fill-opacity='.10'/></g><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z' fill='none' stroke='%23FF7A66' stroke-width='2.5' stroke-opacity='.8'/><circle cx='60' cy='98' r='5.5' fill='%23FF7A66'/><path d='M118 88q8 12 0 26M130 86q8 13 0 28M142 86q8 13 0 28M22 114q28 12 58 4' fill='none' stroke='white' stroke-opacity='.55' stroke-width='3' stroke-linecap='round'/></svg>");
+  --nn-shark-mono: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z' fill='white' fill-opacity='.05'/><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z' fill='none' stroke='%23FF7A66' stroke-opacity='.22' stroke-width='2'/></svg>");
+}
+
+/* ---------- 1. ЗАГАЛЬНЕ: шрифт, кольори, виділення ---------- */
+:root {
+  font-family: var(--nn-font) !important;
+  scrollbar-color: var(--nn-coral-d) var(--nn-bg0);
+  --toolbar-bgcolor: var(--nn-bg1) !important;
+  --toolbar-color: var(--nn-text) !important;
+  --toolbarbutton-icon-fill: var(--nn-text) !important;
+  --toolbar-field-background-color: var(--nn-bg0) !important;
+  --toolbar-field-color: var(--nn-text) !important;
+  --toolbar-field-focus-background-color: var(--nn-bg0) !important;
+  --toolbar-field-focus-color: var(--nn-text) !important;
+  --sidebar-background-color: var(--nn-bg1) !important;
+  --sidebar-text-color: var(--nn-text) !important;
+  --arrowpanel-background: var(--nn-bg1) !important;
+  --arrowpanel-color: var(--nn-text) !important;
+  --arrowpanel-border-color: var(--nn-coral-d) !important;
+  --arrowpanel-border-radius: 0px !important;
+  --arrowpanel-dimmed: rgba(255, 122, 102, 0.16) !important;
+  --arrowpanel-dimmed-further: rgba(255, 122, 102, 0.28) !important;
+}
+::selection { background: var(--nn-coral-d); color: #fff; }
+
+/* Тонка рамка навколо вікна */
+#main-window {
+  outline: 1px solid var(--nn-coral-d) !important;
+  outline-offset: -1px !important;
+}
+
+/* ---------- 2. ПАНЕЛІ: фон + коралова лінія-відблиск знизу ---------- */
+#navigator-toolbox,
+#nav-bar,
+#PersonalToolbar,
+#toolbar-menubar,
+#titlebar {
+  background: var(--nn-bg1) !important;
+  color: var(--nn-text) !important;
+}
+#navigator-toolbox {
+  border: none !important;
+  box-shadow: inset 0 1px 0 var(--nn-hi) !important;
+  /* відблиск: лінія, що світиться коралом посередині */
+  background-image: linear-gradient(90deg, transparent, var(--nn-coral) 35%,
+                    var(--nn-coral-d) 65%, transparent) !important;
+  background-size: 100% 2px !important;
+  background-position: 0 100% !important;
+  background-repeat: no-repeat !important;
+}
+
+/* ---------- 3. МЕНЮ-РЯДОК (показується по Alt): як у Netscape ---------- */
+#toolbar-menubar { box-shadow: var(--nn-raised) !important; }
+#main-menubar > menu { color: var(--nn-text) !important; padding: 2px 8px !important; }
+#main-menubar > menu:hover,
+#main-menubar > menu[_moz-menuactive="true"],
+#main-menubar > menu[open] {
+  background: var(--nn-bg0) !important;
+  box-shadow: var(--nn-sunken) !important;
+  color: var(--nn-coral) !important;
+}
+
+/* ---------- 4. КНОПКИ ПАНЕЛІ: випуклі, натиснуті втиснуті ---------- */
+#nav-bar .toolbarbutton-1 {
+  border-radius: 0 !important;
+  background: var(--nn-bg2) !important;
+  box-shadow: var(--nn-raised) !important;
+  margin-inline: 2px !important;
+}
+#nav-bar .toolbarbutton-1 > .toolbarbutton-icon {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+#nav-bar .toolbarbutton-1:hover {
+  box-shadow: var(--nn-raised), inset 0 0 0 1px var(--nn-coral) !important;
+}
+#nav-bar .toolbarbutton-1:hover:active,
+#nav-bar .toolbarbutton-1[open] {
+  background: var(--nn-bg0) !important;
+  box-shadow: var(--nn-sunken) !important;
+}
+
+/* ПІДПИСИ ПІД ІКОНКАМИ (як Back / Forward / Reload в Netscape).
+   Підписи малюємо самі через ::after, бо в Firefox вони відсутні.
+   Якщо панель поїхала, закоментуй цей блок цілком */
+:is(#back-button, #forward-button, #reload-button, #stop-button,
+    #home-button, #downloads-button, #PanelUI-menu-button) {
+  flex-direction: column !important;
+  gap: 1px !important;
+  padding-block: 3px !important;
+  min-width: 46px !important;
+}
+:is(#back-button, #forward-button, #reload-button, #stop-button,
+    #home-button, #downloads-button, #PanelUI-menu-button)::after {
+  font: 10px var(--nn-font);
+  color: var(--nn-text);
+}
+#back-button::after        { content: "Back"; }
+#forward-button::after     { content: "Forward"; }
+#reload-button::after      { content: "Reload"; }
+#stop-button::after        { content: "Stop"; }
+#home-button::after        { content: "Home"; }
+#downloads-button::after   { content: "Saves"; }
+#PanelUI-menu-button::after { content: "Menu"; }
+
+/* ---------- 5. АДРЕСНИЙ РЯДОК: «Location:» і втиснуте поле ---------- */
+#urlbar-container {
+  display: flex !important;
+  align-items: center !important;
+}
+#urlbar-container::before {
+  content: "Location:";
+  margin-inline: 8px 5px;
+  font: bold 11px var(--nn-font);
+  color: var(--nn-muted);
+}
+#urlbar-background {
+  background: var(--nn-bg0) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: var(--nn-sunken) !important;
+}
+#urlbar[focused] #urlbar-background {
+  box-shadow: var(--nn-sunken), inset 0 0 0 2px var(--nn-coral) !important;
+}
+#urlbar-input { color: var(--nn-text) !important; }
+#urlbar-input::placeholder { color: var(--nn-muted) !important; opacity: 1 !important; }
+.urlbarView-row[selected] { background: var(--nn-coral-d) !important; color: #fff !important; }
+
+/* ---------- 6. ПАНЕЛЬ ЗАКЛАДОК: ряд кнопок як «What's New!» ---------- */
+#PersonalToolbar { box-shadow: var(--nn-raised) !important; padding: 2px 4px !important; }
+#PersonalToolbar .bookmark-item,
+#PersonalToolbar toolbarbutton {
+  background: var(--nn-bg2) !important;
+  box-shadow: var(--nn-raised) !important;
+  border-radius: 0 !important;
+  margin: 2px 3px !important;
+  padding: 2px 9px !important;
+  font: bold 11px var(--nn-font) !important;
+  color: var(--nn-text) !important;
+}
+#PersonalToolbar .bookmark-item:hover {
+  color: var(--nn-coral) !important;
+  box-shadow: var(--nn-raised), inset 0 0 0 1px var(--nn-coral) !important;
+}
+
+/* ---------- 7. THROBBER: квадратик із акулою справа (як логотип N) ----------
+   Під час завантаження акула пропливає через квадрат.
+   Якщо він опинився не з того боку від кнопок вікна, поміняй order */
+#nav-bar::after {
+  content: "";
+  order: 99;
+  flex: none;
+  width: 42px;
+  height: 38px;
+  margin-inline: 6px;
+  background: var(--nn-shark-logo) no-repeat 50% 50% / 86% auto,
+              linear-gradient(#0F3F49, #072A31);
+  box-shadow: var(--nn-sunken);
+}
+#nav-bar:has(#stop-reload-button[displaystop])::after {
+  animation: nn-swim 1.6s linear infinite;
+}
+@keyframes nn-swim {
+  from { background-position: 160% 50%, 0 0; }
+  to   { background-position: -160% 50%, 0 0; }
+}
+
+/* ---------- 8. БІЧНА ПАНЕЛЬ: скіс і акула-водяний знак унизу ---------- */
+#sidebar-main {
+  background: var(--nn-bg1) var(--nn-shark-mono) no-repeat 50% 96% / 78% auto !important;
+  color: var(--nn-text) !important;
+  border-inline-start: 2px solid var(--nn-line) !important;
+  box-shadow: inset 1px 0 0 var(--nn-hi) !important;
+}
+#vertical-tabs-newtab-button {
+  background: var(--nn-bg2) !important;
+  box-shadow: var(--nn-raised) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  color: var(--nn-text) !important;
+}
+#vertical-tabs-newtab-button:hover {
+  box-shadow: var(--nn-raised), inset 0 0 0 1px var(--nn-coral) !important;
+}
+
+/* ---------- 9. ГОЛОВНЕ МЕНЮ (гамбургер) І ВИПАДАЮЧІ МЕНЮ ---------- */
+panel,
+menupopup {
+  --panel-background: var(--nn-bg1);
+  --panel-color: var(--nn-text);
+  --panel-border-color: var(--nn-coral-d);
+  --panel-border-radius: 0px;
+  --panel-shadow: 0 8px 18px rgba(0, 0, 0, 0.65);
+}
+/* акула-водяний знак у кутку головного меню */
+#appMenu-mainView {
+  background: var(--nn-shark-mono) no-repeat right 10px bottom 10px / 170px auto !important;
+}
+.subviewbutton:not([disabled]):hover,
+.subviewbutton:not([disabled])[_moz-menuactive],
+menuitem[_moz-menuactive="true"],
+menu[_moz-menuactive="true"] {
+  background: var(--nn-coral-d) !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+}
+
+/* ---------- 10. СТАТУС-РЯДОК, ПІДКАЗКИ, ПОШУК НА СТОРІНЦІ ---------- */
+#statuspanel-label {
+  background: var(--nn-bg2) !important;
+  color: var(--nn-coral) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: var(--nn-raised) !important;
+  font: 11px var(--nn-font) !important;
+}
+tooltip {
+  background: var(--nn-bg2) !important;
+  color: var(--nn-text) !important;
+  border: 1px solid var(--nn-coral-d) !important;
+  border-radius: 0 !important;
+}
+findbar {
+  background: var(--nn-bg1) !important;
+  box-shadow: var(--nn-raised) !important;
+}

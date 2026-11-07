@@ -1,0 +1,350 @@
+/* ============================================================
+   userChrome.css, ВЕРСІЯ 3
+   Куди класти: <тека профілю>/chrome/userChrome.css (заміни весь вміст)
+   Змінює ТІЛЬКИ інтерфейс браузера. Жодних мережевих url() чи @import.
+   Пресет C працює з темною темою Firefox, пресет A з темою Light.
+   ============================================================ */
+
+/* ---------- 1. ПРЕСЕТИ: активний лише ОДИН :root ---------- */
+
+/* C «Mono Orange»: стиль першого скріншота (кольори ОРІЄНТОВНІ,
+   підстав свої точні значення) */
+:root {
+  --bg:           #c8655a;  /* фон верхньої панелі */
+  --surface:      #fa654a;  /* бічна панель, поле адреси, меню */
+  --text:         #afcdd7;  /* текст та іконки */
+  --accent:       #E8923F;  /* акцент: активне, фокус, рамка вікна */
+  --edge-idle:    #00000b;  /* тонкий контур у спокої */
+  --tab-fill:     #a5a5e6;  /* заливка вкладки */
+  --tab-hover:    #68d0fa;  /* заливка при наведенні */
+  --tab-sel:      #f9b1d4;  /* заливка активної вкладки */
+  --tab-edge:     #4A4A52;  /* контур звичайної вкладки */
+  --tab-sel-edge: #E8923F;  /* контур активної вкладки */
+  --shadow:       transparent;  /* жорстка тінь (у плоскому стилі немає) */
+  --glow:         transparent;  /* сяйво активної вкладки */
+  --bar-shadow:   none;         /* «приступка» під панелями */
+  --frame:        #E8923F;      /* рамка навколо всього вікна */
+  --edge-w:       1px;          /* товщина контурів інтерфейсу */
+  --r-ui:         2px;          /* заокруглення кнопок */
+  --r-pill:       2px;          /* заокруглення поля адреси */
+}
+
+/* A «Крем»: розкоментуй цей блок, а блок C закоментуй
+:root {
+  --bg: #FBF3EA; --surface: #FFF8F0; --text: #3B2622; --accent: #E8664D;
+  --edge-idle: #E8664D; --tab-fill: #FADADD; --tab-hover: #F3ACA3;
+  --tab-sel: #E8664D; --tab-edge: #E8664D; --tab-sel-edge: #3B2622;
+  --shadow: rgba(59, 38, 34, 0.28); --glow: rgba(232, 102, 77, 0.6);
+  --bar-shadow: 0 3px 0 #FADADD; --frame: transparent;
+  --edge-w: 2px; --r-ui: 12px; --r-pill: 999px;
+}
+*/
+
+:root {
+  --muted: color-mix(in srgb, var(--text) 55%, transparent);  /* приглушений текст */
+  --tab-box: 46px;       /* розмір фігури звичайної вкладки */
+  --tab-box-sel: 52px;   /* розмір фігури активної вкладки */
+  --tab-row: 56px;       /* висота рядка вкладки */
+}
+
+/* ---------- 2. ШРИФТ (лише встановлені в системі) ---------- */
+:root {
+  font-family: "JetBrains Mono", "Cascadia Mono", Consolas, monospace !important;
+}
+
+/* ---------- 3. РАМКА ВСЬОГО ВІКНА (як на першому скріні) ---------- */
+#main-window {
+  outline: 1px solid var(--frame) !important;
+  outline-offset: -1px !important;
+}
+
+/* ---------- 4. КОЛЬОРИ ІНТЕРФЕЙСУ (явно, щоб текст читався) ---------- */
+:root {
+  --toolbar-bgcolor: var(--bg) !important;
+  --toolbar-color: var(--text) !important;
+  --toolbarbutton-icon-fill: var(--text) !important;
+  --toolbar-field-background-color: var(--surface) !important;
+  --toolbar-field-color: var(--text) !important;
+  --toolbar-field-focus-background-color: var(--surface) !important;
+  --toolbar-field-focus-color: var(--text) !important;
+  --sidebar-background-color: var(--surface) !important;
+  --sidebar-text-color: var(--text) !important;
+  --arrowpanel-background: var(--surface) !important;
+  --arrowpanel-color: var(--text) !important;
+  --arrowpanel-border-color: var(--accent) !important;
+}
+
+#navigator-toolbox,
+#nav-bar,
+#PersonalToolbar,
+#titlebar {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+#navigator-toolbox {
+  border-bottom: var(--edge-w) solid var(--accent) !important;
+  box-shadow: var(--bar-shadow) !important;
+}
+#PersonalToolbar label,
+#PersonalToolbar description,
+.toolbarbutton-text,
+.bookmark-item { color: var(--text) !important; }
+.titlebar-button { color: var(--text) !important; fill: var(--text) !important; }
+
+/* Кнопки панелі: плоскі, при наведенні лише тонка рамка акценту */
+.toolbarbutton-1 { border-radius: var(--r-ui) !important; }
+.toolbarbutton-1:hover {
+  background: transparent !important;
+  outline: 1px solid var(--accent) !important;
+}
+
+/* ---------- 5. АДРЕСНИЙ РЯДОК: плоский, у фокусі рамка акценту ---------- */
+#urlbar-background {
+  background: var(--surface) !important;
+  border: var(--edge-w) solid var(--edge-idle) !important;
+  border-radius: var(--r-pill) !important;
+  box-shadow: var(--bar-shadow) !important;
+}
+#urlbar[focused] #urlbar-background { border-color: var(--accent) !important; }
+#urlbar-input { color: var(--text) !important; }
+#urlbar-input::placeholder { color: var(--muted) !important; opacity: 1 !important; }
+
+/* ---------- 6. БІЧНА ПАНЕЛЬ ---------- */
+#sidebar-main {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-inline-start: var(--edge-w) solid var(--accent) !important;
+}
+#vertical-tabs,
+#tabbrowser-tabs { background: transparent !important; }
+
+/* Кнопка «New Tab»: контурна, при наведенні рамка акценту.
+   Якщо id інший у твоїй версії, дивись через Browser Toolbox */
+#vertical-tabs-newtab-button {
+  border: var(--edge-w) solid var(--edge-idle) !important;
+  border-radius: var(--r-pill) !important;
+  color: var(--text) !important;
+}
+#vertical-tabs-newtab-button:hover { border-color: var(--accent) !important; }
+
+/* ---------- 7. РОЗМІР І СТОПКА ВКЛАДОК ---------- */
+:root {
+  --tab-size: 54px;    /* сторона квадратного блоку вкладки (ширина = висота).
+                          Співвідношення сторін не міняй: форма розрахована на квадрат */
+  --tab-gap:  3px;     /* зазор між сусідніми вкладками по вертикалі:
+                          0 = впритул, від'ємне значення = накладання */
+  --inset:     0.88;   /* розмір заливки відносно форми. Менше = товщий контур
+                          (товщина контуру ≈ (1 − inset) × 16px) */
+  --inset-sel: 0.82;   /* те саме для активної вкладки */
+  --tab-icon:  22px;   /* розмір іконки (вона стоїть у найширшій точці трикутника) */
+  --tab-min-height: var(--tab-size) !important;
+}
+
+.tabbrowser-tab {
+  position: relative !important;      /* потрібно для z-index нижче */
+  width: var(--tab-size) !important;
+  min-width: 0 !important;
+  max-width: var(--tab-size) !important;
+  height: var(--tab-size) !important;
+  min-height: var(--tab-size) !important;
+  max-height: var(--tab-size) !important;
+  /* КЛЮЧОВЕ: наступна вкладка піднімається на пів-висоти + зазор,
+     тому вкладається в «зубець» попередньої. Боки auto = по центру панелі */
+  margin: calc(var(--tab-gap) - var(--tab-size) / 2) auto 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+/* Перша вкладка не піднімається */
+.tabbrowser-tab:first-child { margin-top: 6px !important; }
+
+/* Прибираємо власні проміжки між вкладками, якщо Firefox їх додає.
+   Якщо між вкладками лишаються зайві проміжки, напиши мені */
+#tabbrowser-tabs,
+#tabbrowser-arrowscrollbox,
+#tabbrowser-arrowscrollbox::part(scrollbox) {
+  gap: 0 !important;
+  row-gap: 0 !important;
+}
+
+/* Лише іконки. Закрити вкладку: середня кнопка миші або Ctrl+W */
+.tab-label-container,
+.tab-close-button { display: none !important; }
+.tab-content { justify-content: center !important; }
+.tab-icon-image {
+  width: var(--tab-icon) !important;
+  height: var(--tab-icon) !important;
+}
+/* Іконка стоїть не по центру блоку, а у найширшій точці трикутника
+   (центр вписаного кола, ≈ 19% ширини від середини в бік основи) */
+.tabbrowser-tab:nth-child(odd)  .tab-content { translate: calc(var(--tab-size) *  0.191) 0; }
+.tabbrowser-tab:nth-child(even) .tab-content { translate: calc(var(--tab-size) * -0.191) 0; }
+
+/* ---------- 8. ТРИКУТНИКИ v4: тіні, чіткий контур, візерунок, розкриття ----------
+   СТРУКТУРА (важливо):
+   .tabbrowser-tab  → НЕ обрізається. На ньому стоїть filter: drop-shadow,
+                      тож тінь повторює форму і падає на сусідів.
+                      pointer-events: none, тобто прямокутник не ловить кліки
+   .tab-background  → тут clip-path (форма) і pointer-events: auto,
+                      тож кліки й наведення ловить лише трикутник
+     ::before       → заливка (зменшена копія форми) + чіткі грані
+     ::after        → тонкий вкладений трикутник-візерунок */
+
+:root {
+  --inset:      0.92;  /* заливка відносно форми. Менше = товщий контур.
+                          Товщина контуру ≈ (1 − inset) × 16px */
+  --inset-sel:  0.87;  /* те саме для активної вкладки */
+  --tab-icon:   20px;  /* розмір іконки (менша, щоб було видно візерунок) */
+  --grow-hover: 1.28;  /* наскільки вкладка розкривається під мишкою */
+  --grow-sel:   1.10;  /* наскільки збільшена активна вкладка */
+  --push:       9px;   /* на скільки сусіди відсуваються від наведеної */
+  /* Тіні: чітка (зміщена) + м'яка. Підлаштуй колір під свою палітру */
+  --tab-shadow-hard: rgba(10, 5, 20, 0.55);
+  --tab-shadow-soft: rgba(10, 5, 20, 0.35);
+}
+
+/* ---- Вкладка: тінь, стан, нічого не обрізаємо ---- */
+.tabbrowser-tab {
+  --edge: var(--tab-edge);     /* колір контуру */
+  --fill: var(--tab-fill);     /* колір заливки */
+  --ring: var(--tab-edge);     /* колір вкладеного трикутника */
+  --k: var(--inset);
+  --grow: 1;
+  pointer-events: none !important;   /* прямокутник кліки НЕ ловить */
+  background: none !important;
+  filter: drop-shadow(2px 3px 0 var(--tab-shadow-hard))
+          drop-shadow(0 5px 7px var(--tab-shadow-soft));
+  transition: translate .3s ease, filter .3s ease;
+}
+
+/* ---- Форми: ◀ для непарних, ▶ для парних. Рівно 6 точок для плавного
+   перетікання. --m1..--m3: форми, в які вкладка розкривається;
+   кожна містить у собі трикутник, тож курсор не вилітає з форми ---- */
+.tabbrowser-tab:nth-child(odd) {
+  --shape: polygon(0% 50%, 50% 25%, 100% 0%, 100% 50%, 100% 100%, 50% 75%);
+  --m1: polygon(0% 50%, 25% 0%, 100% 0%, 100% 50%, 100% 100%, 25% 100%);
+  --m2: polygon(0% 50%, 8% 18%, 100% 0%, 100% 50%, 100% 100%, 8% 82%);
+  --m3: polygon(0% 50%, 30% 5%, 100% 0%, 100% 50%, 100% 100%, 12% 85%);
+}
+.tabbrowser-tab:nth-child(even) {
+  --shape: polygon(100% 50%, 50% 25%, 0% 0%, 0% 50%, 0% 100%, 50% 75%);
+  --m1: polygon(100% 50%, 75% 0%, 0% 0%, 0% 50%, 0% 100%, 75% 100%);
+  --m2: polygon(100% 50%, 92% 18%, 0% 0%, 0% 50%, 0% 100%, 92% 82%);
+  --m3: polygon(100% 50%, 70% 5%, 0% 0%, 0% 50%, 0% 100%, 88% 85%);
+}
+
+/* ---- Внутрішній шар: форма, контур і кліки ---- */
+.tabbrowser-tab .tab-background {
+  position: relative !important;
+  pointer-events: auto !important;     /* ЛИШЕ ця форма ловить кліки й наведення */
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  background: var(--edge) !important;  /* зовнішній шар = колір контуру */
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  clip-path: var(--shape);
+  scale: var(--grow);
+  animation: tri-appear .45s ease-out;
+  /* пружний «перельот» (cubic-bezier з >1) для розкриття */
+  transition: scale .35s cubic-bezier(.34, 1.56, .64, 1),
+              clip-path .35s ease, background-color .25s ease;
+}
+/* Центр масштабування = центр вписаного кола трикутника */
+.tabbrowser-tab:nth-child(odd)  .tab-background { transform-origin: 69.1% 50%; }
+.tabbrowser-tab:nth-child(even) .tab-background { transform-origin: 30.9% 50%; }
+
+/* Заливка: та ж форма, зменшена; чіткі грані (жорсткий перехід на 50%) */
+.tabbrowser-tab .tab-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--fill);
+  background-image: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.22) 50%, rgba(0, 0, 0, 0.14) 50%);
+  clip-path: var(--shape);
+  scale: var(--k);
+  transform-origin: inherit;
+  transition: rotate .7s ease, scale .25s ease,
+              clip-path .35s ease, background-color .25s ease;
+}
+
+/* МОТИВ 1: вкладений тонкий трикутник (кільце між двома трикутниками,
+   рисується через polygon(evenodd, ...)) */
+.tabbrowser-tab .tab-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ring);
+  transition: background-color .25s ease;
+}
+.tabbrowser-tab:nth-child(odd) .tab-background::after {
+  clip-path: polygon(evenodd,
+    23.5% 50%, 89.5% 17%, 89.5% 83%, 23.5% 50%,
+    29% 50%, 87% 21%, 87% 79%, 29% 50%);
+}
+.tabbrowser-tab:nth-child(even) .tab-background::after {
+  clip-path: polygon(evenodd,
+    76.5% 50%, 10.5% 17%, 10.5% 83%, 76.5% 50%,
+    71% 50%, 13% 21%, 13% 79%, 71% 50%);
+}
+
+/* МОТИВ 2: смуги зі зразка (розкоментуй, щоб додати на заливку)
+.tabbrowser-tab .tab-background::before {
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 5px,
+      color-mix(in srgb, var(--edge) 35%, transparent) 5px 6px),
+    linear-gradient(180deg, rgba(255,255,255,.22) 50%, rgba(0,0,0,.14) 50%);
+}
+*/
+
+/* ---- Іконка: росте разом із формою, лишається прямою ---- */
+.tabbrowser-tab .tab-content {
+  scale: var(--grow);
+  transition: scale .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* ---- НАВЕДЕННЯ: кольори, поверх сусідів, сильніша тінь, перетворення ---- */
+.tabbrowser-tab:hover {
+  --fill: var(--tab-hover);
+  --edge: var(--accent);
+  --ring: var(--accent);
+  z-index: 6;
+  filter: drop-shadow(3px 6px 0 var(--tab-shadow-hard))
+          drop-shadow(0 14px 16px var(--tab-shadow-soft));
+}
+.tabbrowser-tab:nth-child(3n+1):hover { --shape: var(--m1); }   /* стрілка-табличка */
+.tabbrowser-tab:nth-child(3n+2):hover { --shape: var(--m2); }   /* пухкий клин */
+.tabbrowser-tab:nth-child(3n):hover   { --shape: var(--m3); }   /* кривий камінь */
+/* Заливка робить повний оберт (360°); область кліку лишається нерухомою */
+.tabbrowser-tab:hover .tab-background::before { rotate: 360deg; }
+
+/* ---- ВІДШТОВХУВАННЯ СУСІДІВ: найближчі зсуваються на --push,
+   наступні на половину. Працює через сусідні селектори та :has() ---- */
+.tabbrowser-tab:hover + .tabbrowser-tab                        { translate: 0 var(--push); }
+.tabbrowser-tab:hover + .tabbrowser-tab + .tabbrowser-tab      { translate: 0 calc(var(--push) / 2); }
+.tabbrowser-tab:has(+ .tabbrowser-tab:hover)                   { translate: 0 calc(var(--push) * -1); }
+.tabbrowser-tab:has(+ .tabbrowser-tab + .tabbrowser-tab:hover) { translate: 0 calc(var(--push) / -2); }
+
+/* ---- АКТИВНА вкладка: інші кольори, товстіший контур, більша ---- */
+.tabbrowser-tab[selected] {
+  --fill: var(--tab-sel);
+  --edge: var(--tab-sel-edge);
+  --ring: var(--tab-sel-edge);
+  --k: var(--inset-sel);
+  --grow: var(--grow-sel);
+  z-index: 3;
+}
+/* Під мишкою розкривається й активна. Стоїть ПІСЛЯ selected, щоб
+   перебити його розмір, але кольори лишаються активної */
+.tabbrowser-tab:hover { --grow: var(--grow-hover); }
+
+/* ---- ПУЛЬСАЦІЯ, коли вкладка грає звук ---- */
+.tabbrowser-tab[soundplaying] .tab-background {
+  animation: tri-pulse 1.4s ease-in-out infinite;
+}
+
+/* ---------- 9. АНІМАЦІЇ ---------- */
+@keyframes tri-appear { from { scale: 0; } }                              /* росте з крапки */
+@keyframes tri-pulse  { 50% { scale: calc(var(--grow) * 1.12); } }       /* дихання */
