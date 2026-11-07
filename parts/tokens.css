@@ -1,0 +1,69 @@
+/* ============================================================
+   parts/tokens.css: єдині токени дизайну «Night Navigator / Батискаф».
+   Тут ТІЛЬКИ змінні (нічого не малює). Підключається першим.
+   Кольори, форми й рух для всіх наступних етапів беруться звідси.
+   ============================================================ */
+
+/* ---------- КРОК 2 (див. інструкцію): СЮДИ вставляється
+   перший блок :root з parts/wolf-ui.css
+   (палітра --nn-bg0…--nn-teal-d, скоси, шрифт, акула-SVG) ---------- */
+:root {
+  /* ---------- ПАЛІТРА (змінюй тут) ---------- */
+  --nn-bg0:     #0C111B;   /* найглибший: поле адреси, фон сторінок */
+  --nn-bg1:     #131A27;   /* панелі */
+  --nn-bg2:     #1B2536;   /* «випуклі» кнопки */
+  --nn-line:    #2A364C;   /* лінії */
+  --nn-text:    #D3DCE8;   /* м'який світлий текст (не білий) */
+  --nn-muted:   #8494AB;   /* приглушений текст */
+  --nn-coral:   #FF7A66;   /* відблиски коралового */
+  --nn-coral-d: #C9594A;   /* темніший корал */
+  --nn-teal:    #2BA3B3;   /* колір акули */
+  --nn-teal-d:  #14606E;
+
+  /* ---------- СКОСИ як у Netscape ---------- */
+  --nn-hi: rgba(170, 195, 235, 0.16);   /* світла грань */
+  --nn-lo: rgba(0, 0, 0, 0.60);         /* темна грань */
+  --nn-raised: inset 1px 1px 0 var(--nn-hi), inset -1px -1px 0 var(--nn-lo), 0 0 0 1px #05080E;
+  --nn-sunken: inset 1px 1px 0 var(--nn-lo), inset -1px -1px 0 var(--nn-hi), 0 0 0 1px #05080E;
+  --nn-font: "Tahoma", "MS Sans Serif", "Segoe UI", system-ui, sans-serif;
+
+  /* ---------- АКУЛА (вбудована картинка, нічого не вантажить із мережі).
+     Кольори вшиті в SVG: щоб змінити, заміни %232BA3B3 (бірюзовий)
+     та %23FF7A66 (корал) ---------- */
+  --nn-shark-logo: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><clipPath id='b'><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z'/></clipPath><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%232BA3B3'/><stop offset='1' stop-color='%2314606E'/></linearGradient></defs><g clip-path='url(%23b)'><rect width='400' height='200' fill='url(%23g)'/><circle cx='95' cy='100' r='62' fill='white' fill-opacity='.10'/><circle cx='175' cy='112' r='56' fill='white' fill-opacity='.08'/><circle cx='255' cy='96' r='52' fill='black' fill-opacity='.14'/><circle cx='330' cy='104' r='42' fill='white' fill-opacity='.10'/></g><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z' fill='none' stroke='%23FF7A66' stroke-width='2.5' stroke-opacity='.8'/><circle cx='60' cy='98' r='5.5' fill='%23FF7A66'/><path d='M118 88q8 12 0 26M130 86q8 13 0 28M142 86q8 13 0 28M22 114q28 12 58 4' fill='none' stroke='white' stroke-opacity='.55' stroke-width='3' stroke-linecap='round'/></svg>");
+  --nn-shark-mono: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z' fill='white' fill-opacity='.05'/><path d='M10 105C55 72 125 62 185 62L212 12L240 64C292 66 332 80 365 92L392 40C378 70 374 88 374 100C376 112 382 135 394 162L356 114C300 126 250 134 200 138L168 186L150 140C90 140 40 128 10 105Z' fill='none' stroke='%23FF7A66' stroke-opacity='.22' stroke-width='2'/></svg>");
+}
+
+:root {
+  /* ГЛИБИНА: ще темніший за bg0, для «безодні» під панелями */
+  --nn-abyss:   #070B13;
+
+  /* МЕТАЛ БАТИСКАФА: тьмяна латунь для клепок, рамок, табличок */
+  --nn-brass:   #B88A4A;
+  --nn-brass-d: #7A5A2E;
+
+  /* БІОЛЮМІНЕСЦЕНЦІЯ: світло навколо коралу й бірюзи */
+  --nn-glow-coral: rgba(255, 122, 102, 0.45);
+  --nn-glow-teal:  rgba(43, 163, 179, 0.35);
+
+  /* СМУГИ НЕБЕЗПЕКИ (корал із чорним) */
+  --nn-hazard-a: var(--nn-coral);
+  --nn-hazard-b: #05080E;
+
+  /* ГРАМАТИКА ФОРМ: розміри зрізу кута (chamfer). Прямих кутів немає */
+  --nn-cut-s: 6px;
+  --nn-cut-m: 12px;
+  --nn-cut-l: 24px;
+
+  /* РУХ: єдині тривалості та криві, щоб усе рухалось «одним голосом» */
+  --nn-t-fast:   0.15s;
+  --nn-t-mid:    0.30s;
+  --nn-t-slow:   0.70s;
+  --nn-drift:    24s;                              /* повільні фонові цикли */
+  --nn-ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* Повага до системного «менше руху» (якщо ввімкнено в ОС) */
+@media (prefers-reduced-motion: reduce) {
+  :root { --nn-drift: 0s; --nn-t-slow: 0s; }
+}
