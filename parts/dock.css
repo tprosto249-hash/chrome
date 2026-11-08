@@ -1,0 +1,155 @@
+/* ============================================================
+   parts/dock.css: ЕТАП 2, нижній док («пульт» замість верхніх панелей)
+   Залежить від tokens.css (--nn-dock-*, --nn-pad-b, ...) і shell.css.
+   Кожен блок незалежний: можна закоментувати будь-який.
+   ============================================================ */
+
+/* ---------- БЛОК 1. ВЕРХ: тонкий рядок-заголовок ---------- */
+#navigator-toolbox {
+  min-height: var(--nn-caption-h) !important;
+  -moz-window-dragging: drag;     /* за цей рядок можна тягнути вікно */
+}
+#navigator-toolbox::before {
+  content: "NIGHT NAVIGATOR  ::  BATHYSCAPHE MK-II";
+  display: block;
+  padding: 5px 12px;
+  font: bold 11px var(--nn-font);
+  letter-spacing: 0.14em;
+  color: #fff;
+  background: linear-gradient(90deg, var(--nn-teal-d), var(--nn-bg0) 70%);
+}
+/* Кнопки вікна (згорнути/розгорнути/закрити) лишаються в правому верхньому
+   куті, навіть коли панель із ними переїхала вниз */
+.titlebar-buttonbox-container {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  height: var(--nn-caption-h) !important;
+  z-index: 100 !important;
+}
+
+/* ---------- БЛОК 2. ДОК: панель кнопок і адреси внизу ---------- */
+#nav-bar {
+  --c: var(--nn-dock-cut);
+  position: fixed !important;
+  top: auto !important;
+  left: var(--nn-gap) !important;
+  right: calc(var(--nn-gap) + var(--nn-side-w)) !important;   /* обходимо бічну панель */
+  bottom: var(--nn-dock-bottom) !important;
+  height: var(--nn-dock-h) !important;
+  z-index: 50 !important;
+  isolation: isolate !important;      /* свій шар, щоб форма ::before була позаду вмісту */
+  padding-inline: 20px !important;    /* місце під клепки */
+  align-items: center !important;
+  background: transparent !important; /* корпус малюється в ::before */
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Корпус дока. Форма й фон у ::before (а не clip-path на самій панелі),
+   щоб випадаючі підказки адресного рядка не обрізались */
+#nav-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  clip-path: polygon(var(--c) 0, calc(100% - var(--c)) 0, 100% var(--c),
+                     100% 100%, 0 100%, 0 var(--c));
+  background:
+    /* діагональні лінії на зрізах верхніх кутів */
+    linear-gradient(to bottom right, transparent calc(50% - 1px), var(--nn-coral) calc(50% - 1px),
+      var(--nn-coral) calc(50% + 1px), transparent calc(50% + 1px)) 0 0 / var(--c) var(--c) no-repeat,
+    linear-gradient(to top right, transparent calc(50% - 1px), var(--nn-coral) calc(50% - 1px),
+      var(--nn-coral) calc(50% + 1px), transparent calc(50% + 1px)) 100% 0 / var(--c) var(--c) no-repeat,
+    /* верхня коралова лінія-відблиск */
+    linear-gradient(90deg, transparent, var(--nn-coral) 18%, var(--nn-coral) 82%, transparent)
+      0 0 / 100% 2px no-repeat,
+    /* бірюзові бічні лінії */
+    linear-gradient(var(--hud-ring), var(--hud-ring)) 0 var(--c) / 2px calc(100% - var(--c)) no-repeat,
+    linear-gradient(var(--hud-ring), var(--hud-ring)) 100% var(--c) / 2px calc(100% - var(--c)) no-repeat,
+    /* латунні клепки по краях */
+    radial-gradient(circle, var(--nn-brass) 0 2px, transparent 3px) 6px 50% / 8px 8px no-repeat,
+    radial-gradient(circle, var(--nn-brass) 0 2px, transparent 3px) calc(100% - 6px) 50% / 8px 8px no-repeat,
+    /* корпус */
+    linear-gradient(180deg, var(--nn-bg2), var(--nn-bg1) 40%, var(--nn-bg0));
+}
+
+/* Панель закладок: вузька смужка над доком (з'являється, лише якщо ввімкнена) */
+#PersonalToolbar {
+  position: fixed !important;
+  left: var(--nn-gap) !important;
+  right: calc(var(--nn-gap) + var(--nn-side-w)) !important;
+  bottom: calc(var(--nn-dock-bottom) + var(--nn-dock-h) + 4px) !important;
+  height: 28px !important;
+  z-index: 49 !important;
+}
+
+/* ---------- БЛОК 3. РАМКА СТОРІНКИ: звільняємо місце під доком ----------
+   Перекриваємо відступи з shell.css: знизу тепер --nn-pad-b */
+#tabbrowser-tabbox {
+  padding: var(--nn-gap) var(--nn-gap) var(--nn-pad-b) !important;
+}
+#tabbrowser-tabbox::before,
+#tabbrowser-tabbox::after {
+  inset: var(--nn-gap) var(--nn-gap) var(--nn-pad-b);
+}
+
+/* ---------- БЛОК 4. АДРЕСНИЙ РЯДОК: без заокруглень, зі зрізаними кутами ---------- */
+:root { --toolbarbutton-border-radius: 0px !important; }
+#urlbar,
+#urlbar-background,
+.urlbar-input-container,
+#urlbar-input-container,
+#urlbar-searchmode-switcher,
+#identity-box {
+  border-radius: 0 !important;
+}
+#urlbar-background {
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px),
+                     calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+/* ---------- БЛОК B (ЕКСПЕРИМЕНТАЛЬНИЙ). ПІДКАЗКИ АДРЕСНОГО РЯДКА ВГОРУ ----------
+   Коли тицяєш в адресний рядок, випадаючий список має рости вгору,
+   інакше він піде за нижній край екрана. Якщо адресний рядок поводиться
+   дивно, закоментуй цей блок і напиши мені */
+#urlbar[breakout][breakout-extend] {
+  top: auto !important;
+  bottom: 4px !important;
+  display: flex !important;
+  flex-direction: column-reverse !important;
+}
+
+/* ---------- ПОВНОЕКРАННИЙ РЕЖИМ: док і заголовок не потрібні ---------- */
+:root:is([inFullscreen], [inDOMFullscreen]) #nav-bar,
+:root:is([inFullscreen], [inDOMFullscreen]) #PersonalToolbar,
+:root:is([inFullscreen], [inDOMFullscreen]) #navigator-toolbox::before {
+  display: none !important;
+}
+
+/* ============================================================
+   ПАТЧ 2.1: док був занизько й, можливо, під шаром сторінки
+   ============================================================ */
+
+/* 1. КАЛІБРУВАННЯ. На скільки додатково підняти док над нижнім краєм.
+   Спершу залиш 0px. Якщо док усе ще занизько, постав 62px (це висота дока).
+   Підбирай значення, поки док не стане під нижнім краєм рамки сторінки.
+   Рамка сторінки від цього значення не залежить */
+:root { --nn-dock-fix: 0px; }
+
+#nav-bar {
+  bottom: calc(var(--nn-dock-bottom) + var(--nn-dock-fix)) !important;
+}
+#PersonalToolbar {
+  bottom: calc(var(--nn-dock-bottom) + var(--nn-dock-fix) + var(--nn-dock-h) + 4px) !important;
+}
+
+/* 2. ПОРЯДОК ШАРІВ. Піднімаємо верхній блок (а з ним і док) над
+   відступом сторінки, щоб непрозорий фон відступу не закривав док */
+#navigator-toolbox {
+  position: relative !important;
+  z-index: 100 !important;
+}
+

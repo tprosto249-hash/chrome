@@ -1,0 +1,142 @@
+/* ============================================================
+   parts/shell.css: ЕТАП 1, оболонка («діагональний зріз + HUD-дужки»)
+   Змінює ТІЛЬКИ інтерфейс навколо сторінки, не саму сторінку.
+   Залежить від токенів у tokens.css (--nn-gap, --nn-cut-*, ...).
+   ============================================================ */
+
+/* Фон за усім вікном: «безодня» */
+#browser,
+#appcontent {
+  background: var(--nn-abyss) !important;
+}
+
+/* ---------- КОНТЕЙНЕР СТОРІНКИ: відступ, сцена, глибиномір ---------- */
+#tabbrowser-tabbox {
+  /* Локальні скорочення (їх успадковують дочірні елементи й псевдоелементи) */
+  --tl: var(--nn-cut-tl);
+  --tr: var(--nn-cut-tr);
+  --br: var(--nn-cut-br);
+  --bl: var(--nn-cut-bl);
+  --t:  var(--nn-ring-w);
+  --k:  calc(0.414 * var(--nn-ring-w));  /* зсув вершин внутрішнього контуру на 45° */
+  --w:  var(--nn-br-w);
+  --len: var(--nn-br-len);
+  --hud: var(--nn-coral);
+
+  /* Складові дужок: пряма смужка й діагональ уздовж зрізу кута */
+  --bar: linear-gradient(var(--hud), var(--hud));
+  --diag-a: linear-gradient(to bottom right, transparent calc(50% - var(--w) / 2),
+            var(--hud) calc(50% - var(--w) / 2), var(--hud) calc(50% + var(--w) / 2),
+            transparent calc(50% + var(--w) / 2));
+  --diag-b: linear-gradient(to top right, transparent calc(50% - var(--w) / 2),
+            var(--hud) calc(50% - var(--w) / 2), var(--hud) calc(50% + var(--w) / 2),
+            transparent calc(50% + var(--w) / 2));
+
+  position: relative !important;       /* потрібно для рамки й дужок нижче */
+  padding: var(--nn-gap) !important;   /* відступ навколо сторінки */
+  background:
+    /* глибиномір: латунна шкала в лівому відступі */
+    repeating-linear-gradient(180deg, var(--nn-brass-d) 0 1px, transparent 1px 10px)
+      5px 48px / 6px calc(100% - 96px) no-repeat,
+    /* відблиски: бірюза зверху справа, корал знизу зліва */
+    radial-gradient(420px 220px at 100% 0%, var(--nn-glow-teal), transparent 70%),
+    radial-gradient(420px 220px at 0% 100%, var(--nn-glow-coral), transparent 70%),
+    /* глибина: світліше зверху, темніше знизу */
+    linear-gradient(180deg, #0F2233, var(--nn-abyss) 60%) !important;
+}
+
+/* ---------- СТОРІНКА: діагональні зрізи кутів ----------
+   clip-path обрізає й клікабельність, тож зрізані кути не реагують */
+#tabbrowser-tabpanels {
+  background: var(--nn-abyss) !important;
+  clip-path: polygon(
+    var(--tl) 0,
+    calc(100% - var(--tr)) 0,
+    100% var(--tr),
+    100% calc(100% - var(--br)),
+    calc(100% - var(--br)) 100%,
+    var(--bl) 100%,
+    0 calc(100% - var(--bl)),
+    0 var(--tl));
+}
+
+/* ---------- ТОНКА РАМКА уздовж зрізаної форми ----------
+   Кільце між двома контурами (polygon(evenodd, ...)): зовнішній повторює
+   форму сторінки, внутрішній зсунутий на --t. Накладка не ловить кліки */
+#tabbrowser-tabbox::before {
+  content: "";
+  position: absolute;
+  inset: var(--nn-gap);
+  z-index: 3;
+  pointer-events: none;
+  background: var(--hud-ring);
+  transition: background-color var(--nn-t-mid) ease;
+  clip-path: polygon(evenodd,
+    /* зовнішній контур */
+    var(--tl) 0,
+    calc(100% - var(--tr)) 0,
+    100% var(--tr),
+    100% calc(100% - var(--br)),
+    calc(100% - var(--br)) 100%,
+    var(--bl) 100%,
+    0 calc(100% - var(--bl)),
+    0 var(--tl),
+    var(--tl) 0,
+    /* внутрішній контур */
+    calc(var(--tl) + var(--k)) var(--t),
+    calc(100% - var(--tr) - var(--k)) var(--t),
+    calc(100% - var(--t)) calc(var(--tr) + var(--k)),
+    calc(100% - var(--t)) calc(100% - var(--br) - var(--k)),
+    calc(100% - var(--br) - var(--k)) calc(100% - var(--t)),
+    calc(var(--bl) + var(--k)) calc(100% - var(--t)),
+    var(--t) calc(100% - var(--bl) - var(--k)),
+    var(--t) calc(var(--tl) + var(--k)),
+    calc(var(--tl) + var(--k)) var(--t));
+}
+
+/* ---------- HUD-ДУЖКИ в кутах (по 3 смужки на кут: дві «руки» + діагональ) ---------- */
+#tabbrowser-tabbox::after {
+  content: "";
+  position: absolute;
+  inset: var(--nn-gap);
+  z-index: 4;
+  pointer-events: none;
+  background:
+    /* лівий верхній кут */
+    var(--bar) var(--tl) 0 / var(--len) var(--w) no-repeat,
+    var(--bar) 0 var(--tl) / var(--w) var(--len) no-repeat,
+    var(--diag-a) 0 0 / var(--tl) var(--tl) no-repeat,
+    /* правий верхній кут */
+    var(--bar) calc(100% - var(--tr) - var(--len)) 0 / var(--len) var(--w) no-repeat,
+    var(--bar) calc(100% - var(--w)) var(--tr) / var(--w) var(--len) no-repeat,
+    var(--diag-b) 100% 0 / var(--tr) var(--tr) no-repeat,
+    /* правий нижній кут */
+    var(--bar) calc(100% - var(--w)) calc(100% - var(--br) - var(--len)) / var(--w) var(--len) no-repeat,
+    var(--bar) calc(100% - var(--br) - var(--len)) calc(100% - var(--w)) / var(--len) var(--w) no-repeat,
+    var(--diag-a) 100% 100% / var(--br) var(--br) no-repeat,
+    /* лівий нижній кут */
+    var(--bar) var(--bl) calc(100% - var(--w)) / var(--len) var(--w) no-repeat,
+    var(--bar) 0 calc(100% - var(--bl) - var(--len)) / var(--w) var(--len) no-repeat,
+    var(--diag-b) 0 100% / var(--bl) var(--bl) no-repeat;
+  filter: drop-shadow(0 0 5px var(--nn-glow-coral));   /* сяйво дужок */
+  animation: nn-hud-breathe calc(var(--nn-drift) / 3) ease-in-out infinite;
+}
+@keyframes nn-hud-breathe { 50% { opacity: 0.72; } }
+
+/* ---------- РЕАКЦІЯ НА ЗАВАНТАЖЕННЯ: рамка стає коралового кольору ---------- */
+:root:has(#stop-reload-button[displaystop]) #tabbrowser-tabbox::before {
+  background: var(--nn-coral);
+}
+
+/* ---------- ПОВНОЕКРАННИЙ РЕЖИМ (F11, відео на весь екран): вимикаємо оболонку ---------- */
+:root:is([inFullscreen], [inDOMFullscreen]) #tabbrowser-tabbox {
+  padding: 0 !important;
+  background: none !important;
+}
+:root:is([inFullscreen], [inDOMFullscreen]) #tabbrowser-tabbox::before,
+:root:is([inFullscreen], [inDOMFullscreen]) #tabbrowser-tabbox::after {
+  display: none !important;
+}
+:root:is([inFullscreen], [inDOMFullscreen]) #tabbrowser-tabpanels {
+  clip-path: none !important;
+}
