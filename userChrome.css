@@ -7,4 +7,5 @@
 @import url("parts/tokens.css");    /* токени: першими */
 @import url("parts/legacy.css");    /* твій попередній файл: вкладки БЕЗ ЗМІН */
 @import url("parts/wolf-ui.css");   /* загальний стиль */
-@import url("parts/shell.css");     /* Етап 1: оболонка (нижче = сильніше) */
+@import url("parts/shell.css");     /* Етап 1: оболонка */
+@import url("parts/dock.css");      /* Етап 2: нижній док */
